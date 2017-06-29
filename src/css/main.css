@@ -1,0 +1,19 @@
+/* add custom styles */
+table {
+  width: 80%;
+  text-align: right;
+  margin-top: 30px;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+td{
+  vertical-align: middle;
+}
+
+th{
+  text-align: right;
+}
+
