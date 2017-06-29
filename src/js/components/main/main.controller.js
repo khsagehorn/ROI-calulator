@@ -50,6 +50,13 @@
     }
 
     $scope.addExpense = function(newExpense){
+
+      if(newExpense.once === ''){
+        newExpense.once = 0;
+      }
+      if(newExpense.monthly === ''){
+        newExpense.monthly = 0;
+      }
       var index = $scope.newExpenses.indexOf(newExpense);
       
       $scope.newExpenses.splice(index, 1);

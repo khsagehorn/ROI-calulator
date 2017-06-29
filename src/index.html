@@ -11,13 +11,14 @@
     <!-- sample angular code -->
     <div class="container">
       <div ng-controller="mainController as mainCtrl">
+        <h2>ROI Calculator</h2>
         <table border="0" class="table-striped">
           <tbody>
             <thead>
-              <th></th>
+              <th>Revenue</th>
               <th>One-Time</th>
               <th>Monthly</th>
-              <th>&nbsp;</th>
+              <th></th>
             </thead>
             <tr ng-repeat="revenue in revenues">
               <td>{{revenue.name}}</td>
@@ -26,9 +27,9 @@
               <td><button ng-click="delete(revenues)" class="btn btn-danger">Delete</button></td>
             </tr>
             <tr ng-repeat="newRevenue in newRevenues">
-              <td><input type="text" ng-model="newRevenue.name"></input></td>
-              <td><input type="text" ng-model="newRevenue.once"></input></td>
-              <td><input type="text" ng-model="newRevenue.monthly"></input></td>
+              <td><input type="text" ng-model="newRevenue.name" placeholder="name" class="form-control"></input></td>
+              <td><input type="text" ng-model="newRevenue.once" placeholder="$0.00" class="form-control"></input></td>
+              <td><input type="text" ng-model="newRevenue.monthly" placeholder="$0.00" class="form-control"></input></td>
               <td><button ng-click="addRevenue(newRevenue)" class="btn btn-primary">Add Revenue Item</button></td>
             </tr>
             <tr>
@@ -37,6 +38,12 @@
               <td>&nbsp;</td>
               <td>&nbsp;</td>
             </tr>
+            <thead>
+              <th>Expense</th>
+              <th>One-Time</th>
+              <th>Monthly</th>
+              <th></th>
+            </thead>
             <tr ng-repeat="expense in expenses">
               <td>{{expense.name}}</td>
               <td>{{expense.once | currency}}</td>
@@ -44,9 +51,9 @@
               <td><button ng-click="delete(expenses)" class="btn btn-danger">Delete</button></td>
             </tr>
             <tr ng-repeat="newExspense in newExpenses">
-              <td><input type="text" ng-model="newExpense.name"></input></td>
-              <td><input type="text" ng-model="newExpense.once"></input></td>
-              <td><input type="text" ng-model="newExpense.monthly"></input></td>
+              <td><input type="text" ng-model="newExpense.name" placeholder="name" class="form-control"></input></td>
+              <td><input type="text" ng-model="newExpense.once" placeholder="$0.00" class="form-control"></input></td>
+              <td><input type="text" ng-model="newExpense.monthly" placeholder="$0.00" class="form-control"></input></td>
               <td><button ng-click="addExpense(newExpense)" class="btn btn-primary">Add Expense Item</button></td>
             </tr>
             <tr>
@@ -65,13 +72,13 @@
               <th>Revenue</th>
               <td>{{ revenues | sumColumn: 'once' | currency}}</td>
               <td>{{ revenues | sumColumn: 'monthly' | currency}}</td>
-              <td>{{(revenues  | sumColumn: 'monthly')*12 + (revenues | sumColumn: 'once') | currency}}</td>
+              <td ng-model="totalRevenues">{{totalRevenues = (revenues  | sumColumn: 'monthly')*12 + (revenues | sumColumn: 'once') | currency}}</td>
             </tr>
             <tr>
               <th>Expenses</th>
               <td>{{ expenses | sumColumn: 'once' | currency}}</td>
               <td>{{ expenses | sumColumn: 'monthly' | currency}}</td>
-              <td ng-model="totalExpenses">{{(expenses  | sumColumn: 'monthly')*12 + (expenses | sumColumn: 'once') | currency}}</td>
+              <td ng-model="totalExpenses">{{totalExpenses = (expenses  | sumColumn: 'monthly')*12 + (expenses | sumColumn: 'once') | currency}}</td>
             </tr>
             <tr>
               <td>&nbsp;</td>
@@ -83,32 +90,20 @@
               <th>Contribution Profit</th>
               <td>&nbsp;</td>
               <td>{{ (revenues | sumColumn: 'monthly') - (expenses | sumColumn: 'monthly') | currency}}</td>
-              <td>{{((revenues  | sumColumn: 'monthly')*12 + (revenues | sumColumn: 'once')) - ((expenses  | sumColumn: 'monthly')*12 + (expenses | sumColumn: 'once'))| currency}}</td>
+              <td ng-model="totalContProf">{{ totalContProf = totalRevenues - totalExpenses | currency}}</td>
             </tr>
             <tr>
               <th>Contribution Margin</th>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>{{(((revenues  | sumColumn: 'monthly')*12 + (revenues | sumColumn: 'once')) - ((expenses  | sumColumn: 'monthly')*12 + (expenses | sumColumn: 'once'))) / ((revenues  | sumColumn: 'monthly')*12 + (revenues | sumColumn: 'once')) | percentage}}</td>
+              <td>{{ totalContProf / totalRevenues | percentage}}</td>
             </tr>            
             <tr>
               <th>Capital ROI (Months)</th>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
+              <td>{{ ((expenses | sumColumn: 'once') - (revenues | sumColumn: 'once')) / ((revenues | sumColumn: 'monthly') - (expenses | sumColumn: 'monthly')) | number:1}}</td>
             </tr>            
-            <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-            </tr>            
-            <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-            </tr>
           </tbody>
         </table>
     </div>
